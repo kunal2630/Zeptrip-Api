@@ -8,17 +8,16 @@ A minimal and extensible boilerplate to kickstart your Node.js backend projects 
 
 Follow these steps to get started:
 
-### 1. 📦 Install Dependencies
+ 1. 📦 Install Dependencies
 
 ```bash
 npm install
 
-### 2. 📦  Create .env File
+ 2. 📦  Create .env File
 
   Create a .env file in the root directory and add your desired port: **PORT:<PORT_NUMBER>**
 
-
-### 3. 📦  Run the Project
+3. 📦  Run the Project
 
  ```bash
  npm run dev

@@ -34,7 +34,7 @@ Follow these steps to get started:
 
 ## Installation
 ```bash
-npm install
+npm i
 ```
 ## Create .env File
 Create a .env file in the root directory and add your desired port: **PORT:<PORT_NUMBER>**
@@ -48,30 +48,9 @@ PORT=3000
 ```bash
  npm run dev
 ```
-Inisde the **src/config** folder create a new file named as `config.json` and write the following code :
+Go inside the `src` folder and execute this command:
+```bash
+    npx sequelize init
 ```
-{
-  "development": {
-    "username": "root",
-    "password": null,
-    "database": "database_development",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
-  "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  },
-  "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
-  }
-}
-```
-Replace username and password with your db credentialS
+By executing the above command you will get migrations and seeders folder along with a config.json inside the config folder
+Replace sample db credential inside config.json with your actual db credential

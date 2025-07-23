@@ -1,6 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const { CityRepository } = require("../repositories");
 const AppError = require("../utils/errors/app-error");
+const { ErrorResponse } = require("../utils/common");
 
 const cityRepository = new CityRepository();
 
@@ -38,16 +39,8 @@ async function getCity(id) {
     }
 }
 async function deleteCity(id) {
-
-    try {
-        const deleteCityResponse = await cityRepository.delete(id);
-        if (!deleteCityResponse) {
-            throw new Error("Resource Not Found");
-        }
-        return deleteCityResponse;
-    } catch (error) {
-        throw new AppError(error.message, StatusCodes.INTERNAL_SERVER_ERROR);
-    }
+    const deleteCityResponse = await cityRepository.delete(id);
+    return deleteCityResponse;
 }
 async function updateCity(id, data) {
     try {

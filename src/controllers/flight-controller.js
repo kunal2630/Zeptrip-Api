@@ -1,32 +1,32 @@
 const { StatusCodes } = require('http-status-codes');
-const { CityService } = require('../services');
+const { FlightService } = require('../services');
 const { SuccessResponse, ErrorResponse } = require('../utils/common');
-const AppError = require('../utils/errors/app-error');
 
-async function addCity(req, res) {
+async function addFlight(req, res) {
     try {
 
-        const city = await CityService.addCity({
-            name: req.body.name
+        const airplane = await FlightService.addFlight({
+            modelNumber: req.body.modelNumber,
+            capacity: req.body.capacity
         });
         SuccessResponse.message = "Request created successfully";
-        SuccessResponse.data = city;
+        SuccessResponse.data = airplane;
         return res
             .status(StatusCodes.CREATED)
             .json(SuccessResponse);
     } catch (error) {
         ErrorResponse.error = error;
         return res
-            .status(error.statusCode ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR)
+            .status(error.statusCode)
             .json(ErrorResponse);
     }
 }
 
-async function getAllCity(req, res) {
+async function getAllFlight(req, res) {
     try {
-        const getAllCityResponse = await CityService.getAllCity();
+        const getAllFlightResponse = await FlightService.getAllFlight();
         SuccessResponse.message = "Request processed successfully";
-        SuccessResponse.data = getAllCityResponse;
+        SuccessResponse.data = getAllFlightResponse;
         return res
             .status(StatusCodes.OK)
             .json(SuccessResponse);
@@ -38,11 +38,11 @@ async function getAllCity(req, res) {
     }
 
 }
-async function getCity(req, res) {
+async function getFlight(req, res) {
     try {
-        const getAllCityResponse = await CityService.getCity(req.params.id);
+        const getAllFlightResponse = await FlightService.getFlight(req.params.id);
         SuccessResponse.message = "Request processed successfully";
-        SuccessResponse.data = getAllCityResponse;
+        SuccessResponse.data = getAllFlightResponse;
         return res
             .status(StatusCodes.OK)
             .json(SuccessResponse);
@@ -55,16 +55,10 @@ async function getCity(req, res) {
 }
 
 
-async function deleteCity(req, res) {
+async function deleteFlight(req, res) {
     try {
 
-        const deleteCityResponse = await CityService.deleteCity(req.params.id);
-        if (!deleteCityResponse) {
-            ErrorResponse.message = "Resource not found";
-            return res
-                .status(StatusCodes.NOT_FOUND)
-                .json(ErrorResponse);
-        }
+        await FlightService.deleteFlight(req.params.id);
         SuccessResponse.message = "Successfully deleted the resource"
         return res
             .status(StatusCodes.OK)
@@ -78,17 +72,17 @@ async function deleteCity(req, res) {
     }
 }
 
-async function updateCity(req, res) {
+async function updateFlight(req, res) {
     try {
 
-        const city = await CityService.getCity(req.params.id);
-        if (!city) {
-            ErrorResponse.message = 'Resource not found please provide valid city id'
+        const airplane = await FlightService.getFlight(req.params.id);
+        if (!airplane) {
+            ErrorResponse.message = 'Resource not found please provide valid flight id'
             return res
                 .status(StatusCodes.BAD_REQUEST)
                 .json(ErrorResponse);
         }
-        await CityService.updateCity(req.params.id, req.body);
+        await FlightService.updateFlight(req.params.id, req.body);
         SuccessResponse.message = 'Successfully updated the resource'
         return res
             .status(StatusCodes.OK)
@@ -103,9 +97,9 @@ async function updateCity(req, res) {
 }
 
 module.exports = {
-    addCity,
-    getCity,
-    getAllCity,
-    deleteCity,
-    updateCity
+    addFlight,
+    getFlight,
+    getAllFlight,
+    deleteFlight,
+    updateFlight
 }

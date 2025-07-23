@@ -1,32 +1,34 @@
 const { StatusCodes } = require('http-status-codes');
-const { CityService } = require('../services');
+const { AirportService } = require('../services');
 const { SuccessResponse, ErrorResponse } = require('../utils/common');
-const AppError = require('../utils/errors/app-error');
 
-async function addCity(req, res) {
+async function addAirport(req, res) {
     try {
 
-        const city = await CityService.addCity({
-            name: req.body.name
+        const airport = await AirportService.addAirport({
+            name: req.body.name,
+            address: req.body.address,
+            code: req.body.code,
+            cityId: req.body.cityId
         });
         SuccessResponse.message = "Request created successfully";
-        SuccessResponse.data = city;
+        SuccessResponse.data = airport;
         return res
             .status(StatusCodes.CREATED)
             .json(SuccessResponse);
     } catch (error) {
         ErrorResponse.error = error;
         return res
-            .status(error.statusCode ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR)
+            .status(error.statusCode)
             .json(ErrorResponse);
     }
 }
 
-async function getAllCity(req, res) {
+async function getAllAirport(req, res) {
     try {
-        const getAllCityResponse = await CityService.getAllCity();
+        const getAllAirportResponse = await AirportService.getAllAirport();
         SuccessResponse.message = "Request processed successfully";
-        SuccessResponse.data = getAllCityResponse;
+        SuccessResponse.data = getAllAirportResponse;
         return res
             .status(StatusCodes.OK)
             .json(SuccessResponse);
@@ -38,11 +40,11 @@ async function getAllCity(req, res) {
     }
 
 }
-async function getCity(req, res) {
+async function getAirport(req, res) {
     try {
-        const getAllCityResponse = await CityService.getCity(req.params.id);
+        const getAllAirportResponse = await AirportService.getAirport(req.params.id);
         SuccessResponse.message = "Request processed successfully";
-        SuccessResponse.data = getAllCityResponse;
+        SuccessResponse.data = getAllAirportResponse;
         return res
             .status(StatusCodes.OK)
             .json(SuccessResponse);
@@ -55,16 +57,10 @@ async function getCity(req, res) {
 }
 
 
-async function deleteCity(req, res) {
+async function deleteAirport(req, res) {
     try {
 
-        const deleteCityResponse = await CityService.deleteCity(req.params.id);
-        if (!deleteCityResponse) {
-            ErrorResponse.message = "Resource not found";
-            return res
-                .status(StatusCodes.NOT_FOUND)
-                .json(ErrorResponse);
-        }
+        await AirportService.deleteAirport(req.params.id);
         SuccessResponse.message = "Successfully deleted the resource"
         return res
             .status(StatusCodes.OK)
@@ -78,17 +74,23 @@ async function deleteCity(req, res) {
     }
 }
 
-async function updateCity(req, res) {
+async function updateAirport(req, res) {
     try {
 
-        const city = await CityService.getCity(req.params.id);
-        if (!city) {
-            ErrorResponse.message = 'Resource not found please provide valid city id'
+        const airplane = await AirportService.getAirport(req.params.id);
+        if (!airplane) {
+            ErrorResponse.message = 'Resource not found please provide valid airport id'
             return res
                 .status(StatusCodes.BAD_REQUEST)
                 .json(ErrorResponse);
         }
-        await CityService.updateCity(req.params.id, req.body);
+        const updateAirportResponse = await AirportService.updateAirport(req.params.id, req.body);
+        if (!updateAirportResponse) {
+            ErrorResponse.message = 'Not able to update airport data, please try again'
+            return res
+                .status(StatusCodes.BAD_REQUEST)
+                .json(ErrorResponse);
+        }
         SuccessResponse.message = 'Successfully updated the resource'
         return res
             .status(StatusCodes.OK)
@@ -103,9 +105,9 @@ async function updateCity(req, res) {
 }
 
 module.exports = {
-    addCity,
-    getCity,
-    getAllCity,
-    deleteCity,
-    updateCity
+    addAirport,
+    getAirport,
+    getAllAirport,
+    deleteAirport,
+    updateAirport
 }

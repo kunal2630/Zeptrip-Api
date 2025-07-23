@@ -5,100 +5,79 @@ const AppError = require('../utils/errors/app-error');
 
 async function addCity(req, res) {
     try {
-
         const city = await CityService.addCity({
             name: req.body.name
         });
-        SuccessResponse.message = "Request created successfully";
-        SuccessResponse.data = city;
         return res
             .status(StatusCodes.CREATED)
-            .json(SuccessResponse);
+            .json(SuccessResponse('Request created successfully', {}));
     } catch (error) {
-        ErrorResponse.error = error;
         return res
             .status(error.statusCode ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR)
-            .json(ErrorResponse);
+            .json(ErrorResponse('', {}, error));
     }
 }
 
 async function getAllCity(req, res) {
     try {
         const getAllCityResponse = await CityService.getAllCity();
-        SuccessResponse.message = "Request processed successfully";
-        SuccessResponse.data = getAllCityResponse;
         return res
             .status(StatusCodes.OK)
-            .json(SuccessResponse);
+            .json(SuccessResponse("Request processed successfully", getAllCityResponse));
     } catch (error) {
-        ErrorResponse.error = error;
         return res
             .status(error.statusCode ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR)
-            .json(ErrorResponse);
+            .json(ErrorResponse('', {}, error));
     }
-
 }
+
 async function getCity(req, res) {
     try {
         const getAllCityResponse = await CityService.getCity(req.params.id);
-        SuccessResponse.message = "Request processed successfully";
-        SuccessResponse.data = getAllCityResponse;
         return res
             .status(StatusCodes.OK)
-            .json(SuccessResponse);
+            .json(SuccessResponse("Request processed successfully", getAllCityResponse));
     } catch (error) {
-        ErrorResponse.error = error;
         return res
             .status(error.statusCode ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR)
-            .json(ErrorResponse);
+            .json(ErrorResponse('', {}, error));
     }
 }
 
-
 async function deleteCity(req, res) {
     try {
-
         const deleteCityResponse = await CityService.deleteCity(req.params.id);
         if (!deleteCityResponse) {
-            ErrorResponse.message = "Resource not found";
             return res
                 .status(StatusCodes.NOT_FOUND)
-                .json(ErrorResponse);
+                .json(ErrorResponse("Resource not found", {}, {}));
         }
-        SuccessResponse.message = "Successfully deleted the resource"
         return res
             .status(StatusCodes.OK)
-            .json(SuccessResponse);
+            .json(SuccessResponse("Successfully deleted the resource", {}));
     } catch (error) {
-        ErrorResponse.error = error;
-        if (error.message) ErrorResponse.message = error.message
         return res
             .status(error.statusCode ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR)
-            .json(ErrorResponse);
+            .json(ErrorResponse(error.message || '', {}, error));
     }
 }
 
 async function updateCity(req, res) {
     try {
-
         const city = await CityService.getCity(req.params.id);
         if (!city) {
-            ErrorResponse.message = 'Resource not found please provide valid city id'
             return res
                 .status(StatusCodes.BAD_REQUEST)
-                .json(ErrorResponse);
+                .json(ErrorResponse('Resource not found please provide valid city id', {}, {}));
         }
         await CityService.updateCity(req.params.id, req.body);
-        SuccessResponse.message = 'Successfully updated the resource'
         return res
             .status(StatusCodes.OK)
-            .json(SuccessResponse);
+            .json(SuccessResponse('Successfully updated the resource', {}));
     } catch (error) {
-        ErrorResponse.error = error;
-        if (error.message) ErrorResponse.message = error.message
         return res
             .status(error.statusCode ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR)
-            .json(ErrorResponse);
+            .json(ErrorResponse(error.message || '', {}, error));
     }
 }
 

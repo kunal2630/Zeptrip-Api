@@ -3,9 +3,23 @@ const { ErrorResponse } = require('../utils/common');
 const AppError = require('../utils/errors/app-error');
 
 function validateAddAirportRequest(req, res, next) {
-    if (!req.body || !req.body.name || !req.body.code || !req.body.cityId) {
+    if (!req.body || !req.body.name) {
         ErrorResponse.message = 'Something went wrong while adding airport';
-        ErrorResponse.error = new AppError(['Please provide all data to add new airport'], StatusCodes.BAD_REQUEST);
+        ErrorResponse.error = new AppError(['name not found in the provided request, please check request body'], StatusCodes.BAD_REQUEST);
+        return res
+            .status(StatusCodes.BAD_REQUEST)``
+            .json(ErrorResponse);
+    }
+    if (!req.body.code) {
+        ErrorResponse.message = 'Something went wrong while adding airport';
+        ErrorResponse.error = new AppError(['code not found in the provided request, please check request body'], StatusCodes.BAD_REQUEST);
+        return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json(ErrorResponse);
+    }
+    if (!req.body.cityId) {
+        ErrorResponse.message = 'Something went wrong while adding airport';
+        ErrorResponse.error = new AppError(['cityId not found in the provided request,please check request body'], StatusCodes.BAD_REQUEST);
         return res
             .status(StatusCodes.BAD_REQUEST)
             .json(ErrorResponse);

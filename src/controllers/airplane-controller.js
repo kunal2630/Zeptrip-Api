@@ -6,95 +6,75 @@ const AppError = require('../utils/errors/app-error');
 
 async function addAirplane(req, res) {
     try {
-
         const airplane = await AirplaneService.addAirplane({
             modelNumber: req.body.modelNumber,
             capacity: req.body.capacity
         });
-        SuccessResponse.message = "Request created successfully";
-        SuccessResponse.data = airplane;
         return res
             .status(StatusCodes.CREATED)
-            .json(SuccessResponse);
+            .json(SuccessResponse('Request created successfully', airplane));
     } catch (error) {
-        ErrorResponse.error = error;
         return res
             .status(error.statusCode)
-            .json(ErrorResponse);
+            .json(ErrorResponse('', {}, error));
     }
 }
 
 async function getAllAirplane(req, res) {
     try {
         const getAllAirplaneResponse = await AirplaneService.getAllAirplane();
-        SuccessResponse.message = "Request processed successfully";
-        SuccessResponse.data = getAllAirplaneResponse;
         return res
             .status(StatusCodes.OK)
-            .json(SuccessResponse);
+            .json(SuccessResponse('Request processed successfully', getAllAirplaneResponse));
     } catch (error) {
-        ErrorResponse.error = error;
         return res
             .status(error.statusCode ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR)
-            .json(ErrorResponse);
+            .json(ErrorResponse('', {}, error));
     }
-
 }
+
 async function getAirplane(req, res) {
     try {
         const getAllAirplaneResponse = await AirplaneService.getAirplane(req.params.id);
-        SuccessResponse.message = "Request processed successfully";
-        SuccessResponse.data = getAllAirplaneResponse;
         return res
             .status(StatusCodes.OK)
-            .json(SuccessResponse);
+            .json(SuccessResponse('Request processed successfully', getAllAirplaneResponse));
     } catch (error) {
-        ErrorResponse.error = error;
         return res
             .status(error.statusCode ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR)
-            .json(ErrorResponse);
+            .json(ErrorResponse('', {}, error));
     }
 }
 
-
 async function deleteAirplane(req, res) {
     try {
-
         await AirplaneService.deleteAirplane(req.params.id);
-        SuccessResponse.message = "Successfully deleted the resource"
         return res
             .status(StatusCodes.OK)
-            .json(SuccessResponse);
+            .json(SuccessResponse('Successfully deleted the resource', {}));
     } catch (error) {
-        ErrorResponse.error = error;
-        if (error.message) ErrorResponse.message = error.message
         return res
             .status(error.statusCode ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR)
-            .json(ErrorResponse);
+            .json(ErrorResponse(error.message || '', {}, error));
     }
 }
 
 async function updateAirplane(req, res) {
     try {
-
         const airplane = await AirplaneService.getAirplane(req.params.id);
         if (!airplane) {
-            ErrorResponse.message = 'Resource not found please provide valid airplane id'
             return res
                 .status(StatusCodes.BAD_REQUEST)
-                .json(ErrorResponse);
+                .json(ErrorResponse('Resource not found please provide valid airplane id', {}, {}));
         }
         await AirplaneService.updateAirplane(req.params.id, req.body);
-        SuccessResponse.message = 'Successfully updated the resource'
         return res
             .status(StatusCodes.OK)
-            .json(SuccessResponse);
+            .json(SuccessResponse('Successfully updated the resource', {}));
     } catch (error) {
-        ErrorResponse.error = error;
-        if (error.message) ErrorResponse.message = error.message
         return res
             .status(error.statusCode ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR)
-            .json(ErrorResponse);
+            .json(ErrorResponse(error.message || '', {}, error));
     }
 }
 

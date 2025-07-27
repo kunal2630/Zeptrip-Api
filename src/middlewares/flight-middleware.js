@@ -43,13 +43,9 @@ function validateAddFlightRequest(req, res, next) {
     next();
 }
 
-
-
-
 function validateDeleteFlightRequest(req, res, next) {
-
     if (!req.params.id) {
-        ErrorResponse.message = 'Something went wrong while deleting airplane';
+        ErrorResponse.message = 'Something went wrong while deleting flight schedule';
         ErrorResponse.error = new AppError(['Flight id not found'], StatusCodes.BAD_REQUEST);
         return res
             .status(StatusCodes.BAD_REQUEST)
@@ -88,7 +84,7 @@ function validateUpdateFlightRequest(req, res, next) {
         );
         return res
             .status(StatusCodes.BAD_REQUEST)
-            .json(ErrorResponse('At least one field is required to update flight', {}, error));
+            .json(ErrorResponse('At least one field is required to update flight schedule', {}, error));
     }
 
     next();

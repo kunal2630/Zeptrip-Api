@@ -28,14 +28,14 @@ async function addFlight(req, res) {
 
 async function getAllFlight(req, res) {
     try {
-        const getAllFlightResponse = await FlightService.getAllFlight();
+        const getAllFlightResponse = await FlightService.getAllFlight(req.query);
         return res
             .status(StatusCodes.OK)
             .json(SuccessResponse("Request processed successfully", getAllFlightResponse));
     } catch (error) {
         return res
             .status(error.statusCode ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR)
-            .json(ErrorResponse('', {}, error));
+            .json(ErrorResponse(error.message, {}, error));
     }
 }
 
@@ -48,7 +48,7 @@ async function getFlight(req, res) {
     } catch (error) {
         return res
             .status(error.statusCode ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR)
-            .json(ErrorResponse('', {}, error));
+            .json(ErrorResponse(error.message, {}, error));
     }
 }
 

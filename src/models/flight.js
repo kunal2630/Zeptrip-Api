@@ -28,10 +28,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     airplaneId: {
+      // this will be airport code ( Ex- DEL OR PAT)
       type: DataTypes.INTEGER,
       allowNull: false,
     },
     departureAirportId: {
+      // this will be airport code ( Ex- DEL OR PAT)
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -55,6 +57,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     totalSeats: {
+      //total Seats represent no of available seat in the flight
       type: DataTypes.INTEGER,
       allowNull: false
     },

@@ -4,17 +4,25 @@ const { SuccessResponse, ErrorResponse } = require('../utils/common');
 
 async function addFlight(req, res) {
     try {
-        const airplane = await FlightService.addFlight({
-            modelNumber: req.body.modelNumber,
-            capacity: req.body.capacity
+        const addFlightResponse = await FlightService.addFlight({
+            flightNumber: req.body.flightNumber,
+            airplaneId: req.body.airplaneId,
+            departureAirportId: req.body.departureAirportId,
+            arrivalAirportId: req.body.arrivalAirportId,
+            arrivalTime: req.body.arrivalTime,
+            departureTime: req.body.departureTime,
+            price: req.body.price,
+            boardingGate: req.body.boardingGate,
+            totalSeats: req.body.totalSeats
         });
+
         return res
             .status(StatusCodes.CREATED)
-            .json(SuccessResponse("Request created successfully", airplane));
+            .json(SuccessResponse("Request created successfully", addFlightResponse));
     } catch (error) {
         return res
-            .status(error.statusCode)
-            .json(ErrorResponse('', {}, error));
+            .status(error.statusCode ? error.statusCode : StatusCodes.INTERNAL_SERVER_ERROR)
+            .json(ErrorResponse(error.message, {}, error));
     }
 }
 

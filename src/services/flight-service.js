@@ -6,7 +6,6 @@ const flightRepository = new FlightRepository();
 
 async function addFlight(flightData) {
     try {
-
         const addFlightResponse = await flightRepository.add(flightData);
         return addFlightResponse;
     } catch (error) {
@@ -17,7 +16,10 @@ async function addFlight(flightData) {
             });
             throw new AppError(explanation, StatusCodes.BAD_REQUEST);
         }
-        throw new AppError('Cannot create a new Airplance object', StatusCodes.INTERNAL_SERVER_ERROR);
+        if (error.name == 'SequelizeDatabaseError') {
+            throw new AppError(error.parent.sqlMessage, StatusCodes.BAD_REQUEST);
+        }
+        throw new AppError('Cannot add a new Flight ', StatusCodes.INTERNAL_SERVER_ERROR);
     }
 }
 

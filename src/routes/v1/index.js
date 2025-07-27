@@ -8,7 +8,7 @@ const airportRoutes = require('./airport/airport-routes');
 
 
 router.use('/info', infoRoutes);
-router.use('/airplanes', airplaneRoutes);
+router.use('/airplane', airplaneRoutes);
 router.use('/city', cityRoutes);
 router.use('/flight', flightRoutes);
 router.use('/airport', airportRoutes);

@@ -27,11 +27,11 @@ class CrudRepository {
     }
 
     async getAll() {
-        return await this.model.findAll();;
+        return await this.model.findAll();
     }
 
     async get(id) {
-        return await this.model.findByPk(id)
+        return await this.model.findByPk(id);
     }
 
 }

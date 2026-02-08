@@ -54,3 +54,6 @@ Go inside the `src` folder and execute this command:
 ```
 By executing the above command you will get migrations and seeders folder along with a config.json inside the config folder
 Replace sample db credential inside config.json with your actual db credential
+
+
+test
